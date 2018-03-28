@@ -46,13 +46,3 @@ class Card
     @next_rep
   end
 end
-
-scores = [1,2,3,2,3]
-
-ease_factor = INITIAL_EASE_FACTOR
-last_rep = 0
-
-card = Card.new
-pp [EASY,EASY,VEASY, MEDIUM, EASY, VEASY,HARD,HARD].map { |q|
-  card.review(q)
-}
