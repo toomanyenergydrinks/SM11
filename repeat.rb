@@ -27,25 +27,28 @@ module EaseFactor
   end
 end
 
+class Card
+  def initialize()
+    @ef = INITIAL_EASE_FACTOR
+    @reps = 1
+    @next_rep = Repetitions.next_rep(@reps, 0, @ef)
+  end
+  def review(score)
+    @reps += 1
+    @ef = EaseFactor.update_function(score, @ef)
+    @next_rep = Repetitions.next_rep(@reps, @next_rep, @ef)
+    @next_rep
+  end
+end
+
 scores = [1,2,3,2,3]
 
 ease_factor = INITIAL_EASE_FACTOR
 last_rep = 0
 
-scores.each_with_index do |score, i|
-  interval = Repetitions.next_rep(i+1, last_rep, ease_factor)  
-  last_rep = interval
-  puts last_rep
-end
-
-q = [VHARD,HARD,HARD,EASY,EASY,EASY,EASY]
-
-last_ef = INITIAL_EASE_FACTOR
-
-
-
-q.each { |i|
-  last_ef = EaseFactor.update_function(i, last_ef)
-  Repetitions.next_rep()
-  puts last_ef
-}
+card = Card.new
+card.review(HARD)
+card.review(HARD)
+card.review(VHARD)
+card.review(VEASY)
+card.review(MEDIUM)
