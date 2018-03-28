@@ -11,7 +11,7 @@ HARD = 2
 VHARD = 1
 
 module Repetitions
-  def next_rep(iteration, last_rep, ease_factor)
+  def self.next_rep(iteration, last_rep, ease_factor)
     return 1 if iteration == 1
     return 6 if iteration == 2
     return last_rep*ease_factor
@@ -27,9 +27,22 @@ module EaseFactor
   end
 end
 
+scores = [1,2,3,2,3]
+
+ease_factor = INITIAL_EASE_FACTOR
+last_rep = 0
+
+scores.each_with_index do |score, i|
+  interval = Repetitions.next_rep(i+1, last_rep, ease_factor)  
+  last_rep = interval
+  puts last_rep
+end
+
 q = [VHARD,HARD,HARD,EASY,EASY,EASY,EASY]
 
 last_ef = INITIAL_EASE_FACTOR
+
+
 
 q.each { |i|
   last_ef = EaseFactor.update_function(i, last_ef)
