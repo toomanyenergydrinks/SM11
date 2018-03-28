@@ -1,6 +1,4 @@
-# Parameter to be optimised is the requested recall rate
-
-# Forgetting index is the proportion of elements that are not remembered at repetitions. 
+require 'pp'
 
 INITIAL_EASE_FACTOR = 2.5 # ease factor for initial items
 
@@ -10,18 +8,26 @@ MEDIUM = 3
 HARD = 2
 VHARD = 1
 
+ONE_DAY = 1
+SIX_DAYS = 6
+
 module Repetitions
-  def self.next_rep(iteration, last_rep, ease_factor)
-    return 1 if iteration == 1
-    return 6 if iteration == 2
-    return last_rep*ease_factor
+  def self.next_rep(iteration, last_interval, ease_factor)
+
+    case iteration
+      when 1
+        return ONE_DAY
+      when 6
+        return SIX_DAYS
+      else
+        return last_interval*ease_factor
+    end
+
   end
 end
 
 module EaseFactor
-  def update(ef, q)
-  
-  end
+  # Magic numbers, anyway to clarify the significance of the numbers in this formula?
   def self.update_function(q, ef)
     ef - 0.8 + 0.28 * q - 0.02 * q * q
   end
@@ -30,8 +36,8 @@ end
 class Card
   def initialize()
     @ef = INITIAL_EASE_FACTOR
-    @reps = 1
-    @next_rep = Repetitions.next_rep(@reps, 0, @ef)
+    @reps = 0
+    @next_rep = 0
   end
   def review(score)
     @reps += 1
@@ -47,8 +53,6 @@ ease_factor = INITIAL_EASE_FACTOR
 last_rep = 0
 
 card = Card.new
-card.review(HARD)
-card.review(HARD)
-card.review(VHARD)
-card.review(VEASY)
-card.review(MEDIUM)
+pp [EASY,EASY,VEASY, MEDIUM, EASY, VEASY,HARD,HARD].map { |q|
+  card.review(q)
+}
