@@ -1,5 +1,6 @@
 require 'spec_helper'
+require './repeat'
 
-describe Repetitions do
+RSpec.describe Repetitions do
 
 end
